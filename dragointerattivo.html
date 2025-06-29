@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Drago Interattivo</title>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drago Cartoon</title>
   <style>
     body {
       margin: 0;
-      background: #f3f0e8;
+      background: #f0f4ff;
     }
     svg {
       display: block;
@@ -17,38 +17,55 @@
   </style>
 </head>
 <body>
-  <svg xmlns="http://www.w3.org/2000/svg"></svg>
+  <svg xmlns="https://www.w3.org/TR/2018/CR-SVG2-20181004/"></svg>
 
   <script>
     const svg = document.querySelector("svg");
     const N = 80;
     const elems = [];
 
-    const rad = 0.3;
     const width = window.innerWidth;
     const height = window.innerHeight;
+    const rad = 0.3;
     let frm = 0;
 
     const pointer = { x: width / 2, y: height / 2 };
+
     document.addEventListener("mousemove", (e) => {
       pointer.x = e.clientX;
       pointer.y = e.clientY;
     });
 
-    for (let i = 0; i < N; i++) {
-      const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
-      use.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#seg");
-      svg.appendChild(use);
-      elems.push({ x: width / 3, y: height / 3, use });
-    }
-
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    // Definizioni cartoon
+    const defs = document.createElementNS("https://www.w3.org/TR/2018/CR-SVG2-20181004/", "defs");
     defs.innerHTML = `
+      <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#8CE6FF"/>
+        <stop offset="100%" stop-color="#4FA0D9"/>
+      </linearGradient>
+
+      <g id="head">
+        <path d="M -20 0 Q -10 -20 0 -10 Q 10 -20 20 0 Q 10 20 0 10 Q -10 20 -20 0 Z"
+              fill="#4FA0D9" stroke="#264d73" stroke-width="2"/>
+        <circle cx="-6" cy="-4" r="3" fill="white"/>
+        <circle cx="6" cy="-4" r="3" fill="white"/>
+        <circle cx="-6" cy="-4" r="1.5" fill="black"/>
+        <circle cx="6" cy="-4" r="1.5" fill="black"/>
+        <path d="M -5 6 Q 0 10 5 6" stroke="#264d73" stroke-width="1.5" fill="none"/>
+      </g>
+
       <g id="seg">
-        <path d="M -10 0 Q 0 -10 10 0 Q 0 10 -10 0 Z" fill="black" fill-opacity="0.5" />
+        <ellipse rx="8" ry="4" fill="url(#bodyGrad)" stroke="#3a7ca5" stroke-width="1"/>
       </g>
     `;
     svg.appendChild(defs);
+
+    for (let i = 0; i < N; i++) {
+      const use = document.createElementNS("https://www.w3.org/TR/2018/CR-SVG2-20181004/", "use");
+      use.setAttributeNS("http://www.w3.org/1999/xlink", "href", i === 0 ? "#head" : "#seg");
+      svg.appendChild(use);
+      elems.push({ x: width / 2, y: height / 2, use });
+    }
 
     const run = () => {
       requestAnimationFrame(run);
@@ -67,11 +84,11 @@
         e.x += (ep.x - e.x + Math.cos(a) * ((100 - i) / 5)) / 4;
         e.y += (ep.y - e.y + Math.sin(a) * ((100 - i) / 5)) / 4;
 
-        const constS = 162 + 4 * (1 - i) / 50;
+        const scale = 1 - i * 0.01; // Riduce le dimensioni in coda
         e.use.setAttributeNS(
           null,
           "transform",
-          `translate(${(ep.x + e.x) / 2}, ${(ep.y + e.y) / 2}) rotate(${(180 / Math.PI) * a})`
+          `translate(${(ep.x + e.x) / 2}, ${(ep.y + e.y) / 2}) rotate(${(180 / Math.PI) * a}) scale(${scale})`
         );
       }
     };
