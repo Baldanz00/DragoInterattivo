@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" >
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Drago Cartoon</title>
   <style>
     body {
@@ -17,7 +17,7 @@
   </style>
 </head>
 <body>
-  <svg xmlns="https://www.w3.org/TR/2018/CR-SVG2-20181004/"></svg>
+  <svg xmlns="http://www.w3.org/2000/svg"></svg>
 
   <script>
     const svg = document.querySelector("svg");
@@ -37,7 +37,7 @@
     });
 
     // Definizioni cartoon
-    const defs = document.createElementNS("https://www.w3.org/TR/2018/CR-SVG2-20181004/", "defs");
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
     defs.innerHTML = `
       <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stop-color="#8CE6FF"/>
@@ -61,7 +61,7 @@
     svg.appendChild(defs);
 
     for (let i = 0; i < N; i++) {
-      const use = document.createElementNS("https://www.w3.org/TR/2018/CR-SVG2-20181004/", "use");
+      const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
       use.setAttributeNS("http://www.w3.org/1999/xlink", "href", i === 0 ? "#head" : "#seg");
       svg.appendChild(use);
       elems.push({ x: width / 2, y: height / 2, use });
